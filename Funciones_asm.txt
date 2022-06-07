@@ -1,0 +1,95 @@
+﻿
+int suma(int a, int b){
+	__asm("addl %%ebx, %%eax;"
+			:"=a"(a)
+			:"a" (a),"b"(b)
+	);
+	return a;
+}
+int resta(int a, int b){
+	__asm("subl %%ebx, %%eax;"
+	:"=a" (a)
+	:"a" (a), "b"(b)
+	);
+	return a;
+}
+int division(int a, int b){
+	__asm("movl $0x0, %%edx;"
+			"movl %2, %%eax;"
+			"movl %3, %%ebx;"
+			"idivl %%ebx;"
+			:"=a"(a), "=d"(b)
+			:"g" (a), "g"(b)	
+	);
+	return a;
+}
+int multiplicacion(int a,int b){
+	__asm("imull %%ebx, %%eax;"
+	:"=a" (a)
+	:"a" (a), "b" (b)	
+	);
+	return a;
+}
+float raiz(float fa){
+	float res=0;
+	__asm__ __volatile__("fld %1;"
+						"fsqrt;"
+						"fstp %0;"
+						:"=m" (res)
+						:"m" (fa)
+						);
+	return res;
+}
+float sin(float fa){
+	float res;
+	float tw_angulos=180.f;
+	float radianes;
+	__asm__ __volatile__("fld %1;"
+						"fld %2;"
+						"fldpi;"
+						"fmul;"
+						"fdiv;"
+						"fstp %0;"
+						:"=m" (res)
+						: "m"(tw_angulos),"m"(fa)
+						);
+	return res;
+}
+float cos(float fa){
+	float res;
+	float tw_angulos=180.f;
+	float radianes;
+	__asm__ __volatile__("fld %1;"
+						"fld %2;"
+						"fldpi;"
+						"fmul;"
+						"fdiv;"
+						"fstp %0;"
+						:"=m" (res)
+						: "m"(tw_angulos),"m"(fa)
+						);
+	__asm__ __volatile__("fld %1;"
+						"fcos;"
+						"fstp %0;"
+						: "=m" (res)
+						: "m" (radianes)
+	);
+	return res;
+}
+int potencia(int a, int b){
+	__asm ("imull %%ebx, %%eax;"
+		: "=a" (a)
+		: "a" (a), "b" (a)
+	);
+	return a;
+}
+int modulo(int a,int b){
+	__asm("movl $0x0, %%edx;"
+		"movl %2, %%eax;"
+		"movl %3, %%ebx;"
+		"idivl %%ebx;"
+		:"=a" (a), "=d" (b)
+		:"g" (a), "g" (b)
+	);
+	return b;
+}
